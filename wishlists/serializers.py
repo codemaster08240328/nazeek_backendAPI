@@ -2,10 +2,6 @@ from rest_framework import serializers
 from .models import Wishlist, WishlistItem
 from product.models import Variation
 from product.serializers import VariationSerializer
-<<<<<<< HEAD
-
-=======
->>>>>>> e5c2f4d56cb9064404831271c81324e10cf7dd2b
 
 from django.conf import settings
 

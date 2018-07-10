@@ -102,13 +102,10 @@ class WishlistItemList(ListCreateAPIView):
                     existant_item._prefetched_objects_cache = {}
                 return Response(serializer.data)
             #else
-<<<<<<< HEAD
+
             serializer = self.get_serializer(data={"product":request.POST.get('product'), "quantity":request.POST.get('quantity'),
                 "wishlist": queryset_wishlist.id })
-=======
-            serializer = self.get_serializer(data={"product": request.POST.get('product'), "quantity": request.POST.get('quantity'),
-                "wishlist": queryset_wishlist.id})
->>>>>>> e5c2f4d56cb9064404831271c81324e10cf7dd2b
+
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
