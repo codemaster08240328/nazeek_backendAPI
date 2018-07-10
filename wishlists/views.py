@@ -1,0 +1,174 @@
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
+from rest_framework import status
+from cart.mixins import TokenMixin
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+from django.contrib.auth import get_user_model
+import requests
+import json
+from django.http import Http404
+
+from .serializers import WishlistSerializer, WishlistItemSerializer, GetWishListItemsSerializer
+from .models import Wishlist, WishlistItem
+
+User = get_user_model()
+class WishlistList(ListCreateAPIView):
+    serializer_class = WishlistSerializer
+
+
+    #GET OR CREATE A WISH LIST FOR AN AUTHENTICATED USER
+    def list(self, request, *args, **kwargs):
+        try:
+            token=request.GET.get('token')
+            from project.settings import PROJECT_URL
+            user_id = requests.get(PROJECT_URL+'/rest-auth/user/', headers={'authorization': 'Token ' + token})
+            user_id = json.loads(user_id.text)
+            user_record=User.objects.filter(pk=user_id.get('pk'))
+            if user_record:
+                queryset = Wishlist.objects.prefetch_related(
+                    'wishlist_items__product'
+                ).get(user=user_record[0])
+            else:
+                raise Wishlist.DoesNotExist
+            serializer = self.get_serializer(queryset)
+            if len(serializer.data.get('wishlist_items', '')) == 0:
+                return Response({"message": "Your Wish List is empty.",
+                    "wishlist_items": [],
+                     'whishlist_id':Wishlist.objects.filter(user__pk=user_id.get('pk'))[0].id
+                    })
+            return Response(serializer.data)
+        except Wishlist.DoesNotExist:
+            token = request.GET.get('token')
+            from project.settings import PROJECT_URL
+            user_id = requests.get(PROJECT_URL+'/rest-auth/user/', headers={'authorization': 'Token ' + token})
+            user_id = json.loads(user_id.text)
+            user_record = User.objects.get(pk=user_id.get('pk'))
+            serializer = self.get_serializer(data={
+                'user':user_id.get('pk')}
+            )
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response({'message': "Your Wish List is empty.",
+                             "wishlist_items": [], 'whishlist_id':Wishlist.objects.filter(user__pk=user_id.get('pk'))[0].id}, status=status.HTTP_201_CREATED,headers = headers)
+
+
+class WishlistItemList(ListCreateAPIView):
+    serializer_class = WishlistItemSerializer
+    queryset = WishlistItem.objects.all()
+
+
+    def list(self, request, *args, **kwargs):
+        token = request.GET.get('token')
+        from project.settings import PROJECT_URL
+        user_id = requests.get(PROJECT_URL+'/rest-auth/user/', headers={'authorization': 'Token ' + token})
+        user_id = json.loads(user_id.text)
+        user_record = User.objects.filter(pk=user_id.get('pk'))
+        queryset = WishlistItem.objects.select_related(
+            'wishlist', 'product'
+        ).filter(
+            wishlist__user=user_record[0]
+        ) if user_record else None
+        serializer = GetWishListItemsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        #if the wishlist for that user is already created
+        try:
+            token = request.GET.get('token')
+            from project.settings import PROJECT_URL
+            user_id = requests.get(PROJECT_URL+'/rest-auth/user/', headers={'authorization': 'Token ' + token})
+            user_id = json.loads(user_id.text)
+            user_record = User.objects.filter(pk=user_id.get('pk'))
+            queryset_wishlist = Wishlist.objects.get(user=user_record[0])
+            #if the wishlist item exists in the USER's wishlist
+            #just increment the quantity
+            if queryset_wishlist.wishlist_items.filter(
+                product=request.POST.get('product')
+            ).exists():
+                existant_item = WishlistItem.objects.filter(
+                    wishlist = queryset_wishlist,
+                    product=request.POST.get('product')
+                ).first()
+                serializer = self.get_serializer(existant_item,
+                    data={"quantity": existant_item.quantity + 1}, partial=True
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                if getattr(existant_item, '_prefetched_objects_cache', None):
+                    # If 'prefetch_related' has been applied to a queryset, we need to
+                    # forcibly invalidate the prefetch cache on the existant_item.
+                    existant_item._prefetched_objects_cache = {}
+                return Response(serializer.data)
+            #else
+<<<<<<< HEAD
+            serializer = self.get_serializer(data={"product":request.POST.get('product'), "quantity":request.POST.get('quantity'),
+                "wishlist": queryset_wishlist.id })
+=======
+            serializer = self.get_serializer(data={"product": request.POST.get('product'), "quantity": request.POST.get('quantity'),
+                "wishlist": queryset_wishlist.id})
+>>>>>>> e5c2f4d56cb9064404831271c81324e10cf7dd2b
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data,
+                status=status.HTTP_201_CREATED, headers=headers)
+        #if the wishlist for that user does not exist
+        #create it first and then add the item to his wishlist
+        except Wishlist.DoesNotExist:
+            token = request.GET.get('token')
+            from project.settings import PROJECT_URL
+            user_id = requests.get(PROJECT_URL+'/rest-auth/user/', headers={'authorization': 'Token ' + token})
+            user_id = json.loads(user_id.text)
+            user_record = User.objects.filter(pk=user_id.get('pk'))
+            serializer_wishlist = WishlistSerializer(
+                data={"user": user_record[0]})
+            serializer_wishlist.is_valid(raise_exception=True)
+            serializer_wishlist.save()
+            serializer = self.get_serializer(data={**request.data,
+                "wishlist": serializer_wishlist.data['id']})
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED,
+            headers=headers)
+
+
+class WishlistItemDetail(RetrieveUpdateDestroyAPIView,TokenMixin):
+    queryset = WishlistItem.objects.all()
+    serializer_class = WishlistItemSerializer
+    lookup_url_kwarg = 'pk'
+
+
+    def get_object(self):
+        try:
+            return WishlistItem.objects.get(
+                wishlist = self.kwargs['wishlist_pk'],
+                product = self.kwargs['pk']
+            )
+        except WishlistItem.DoesNotExist:
+            raise Http404
+
+# Only fetch the count of wishlist_items in the user's wishlist -
+# so they're dynamically displayed in the nav bar
+@api_view(['GET'])
+
+def WishlistItemCount(request):
+    if request.method == 'GET' and request.GET.get('token'):
+        token = request.GET.get('token')
+        from project.settings import PROJECT_URL
+        user_id = requests.get(PROJECT_URL+'/rest-auth/user/',headers={'authorization': 'Token ' + token})
+        user_id=json.loads(user_id.text)
+        try:
+            wishlist_item_count = WishlistItem.objects.filter(
+                wishlist__user=User.objects.get(pk=user_id.get('pk'))
+            ).count()
+        except:
+            raise Http404
+
+        return Response(
+            {"item_count": int(wishlist_item_count)}
+        )
+    else:
+        raise Http404
