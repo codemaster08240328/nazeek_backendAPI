@@ -72,6 +72,42 @@ class ProductOccasion(models.Model):
     def get(self, *args, **kwargs):
         return self.get_queryset().active()
 
+class ProductDesigner(models.Model):
+    title = models.CharField(max_length=180, unique=True)
+    seller_id = models.OneToOneField(ProductSeller)
+    def __str__(self):
+        return self.title
+
+    def get(self, *args, **kwargs):
+        return self.get_queryset().active()
+
+class ProductTable(models.Model):
+    title = models.CharField(max_length=180, unique=True)
+    seller_id = models.OneToOneField(ProductSeller)
+    def __str__(self):
+        return self.title
+
+    def get(self, *args, **kwargs):
+        return self.get_queryset().active()
+
+class ProductChair(models.Model):
+    title = models.CharField(max_length=180, unique=True)
+    seller_id = models.OneToOneField(ProductSeller)
+    def __str__(self):
+        return self.title
+
+    def get(self, *args, **kwargs):
+        return self.get_queryset().active()
+
+class ProductSofa(models.Model):
+    title = models.CharField(max_length=180, unique=True)
+    seller_id = models.OneToOneField(ProductSeller)
+    def __str__(self):
+        return self.title
+
+    def get(self, *args, **kwargs):
+        return self.get_queryset().active()
+
 
 
 
@@ -87,6 +123,10 @@ class Product(models.Model):
     room_id = models.ForeignKey(ProductRooms)
     style_id = models.ForeignKey(ProductStyles)
     occasion_id = models.ForeignKey(ProductOccasion)
+    designer_id = models.ForeignKey(ProductDesigner, blank=True, null=True)
+    table_id = models.ForeignKey(ProductTable, blank=True, null=True)
+    chair_id = models.ForeignKey(ProductChair, blank=True, null=True)
+    sofa_id = models.ForeignKey(ProductSofa, blank=True, null=True)
     seller_id = models.ForeignKey(ProductSeller)
     categories = models.ManyToManyField('Category', blank=True)
     default = models.ForeignKey('Category', related_name='default_category')#, null=True, blank=True)

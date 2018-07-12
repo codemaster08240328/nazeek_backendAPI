@@ -3,7 +3,8 @@ import base64
 from django.core.files import File
 from rest_framework import serializers
 
-from .models import Category, Product, ProductImage, Variation, ProductBrand, ProductSeller, ProductVarImage, ProductOccasion, ProductRooms, ProductStyles
+from .models import Category, Product, ProductImage, Variation, ProductBrand, ProductSeller, ProductVarImage, ProductOccasion, ProductRooms, ProductStyles, ProductDesigner, ProductTable, ProductChair, ProductSofa
+
 
 
 class ProductVarImageSerializer(serializers.ModelSerializer):
@@ -30,12 +31,12 @@ class VariationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variation
         fields = [
+            'product',
             "id",
             "title",
             "price",
             "sale_price",
             "color",
-            "product",
             "productvarimage_set"
         ]
 
@@ -230,6 +231,46 @@ class ProductOccasionSerializer(serializers.ModelSerializer):
             'product_set'
         ]
 
+class ProductDesignerSerializer(serializers.ModelSerializer):
+    product_set = ProductSerializer(many=True)
+    class Meta:
+        model = ProductDesigner
+        fields = [
+            'id',
+            'title',
+            'product_set'
+        ]
+
+class ProductTableSerializer(serializers.ModelSerializer):
+    product_set = ProductSerializer(many=True)
+    class Meta:
+        model = ProductTable
+        fields = [
+            'id',
+            'title',
+            'product_set'
+        ]
+
+class ProductChairSerializer(serializers.ModelSerializer):
+    product_set = ProductSerializer(many=True)
+    class Meta:
+        model = ProductChair
+        fields = [
+            'id',
+            'title',
+            'product_set'
+        ]
+
+class ProductSofaSerializer(serializers.ModelSerializer):
+    product_set = ProductSerializer(many=True)
+    class Meta:
+        model = ProductSofa
+        fields = [
+            'id',
+            'title',
+            'product_set'
+        ]
+
 class ProductRoomsSerializer(serializers.ModelSerializer):
     product_set = ProductSerializer(many=True)
     class Meta:
@@ -249,8 +290,25 @@ class ProductStylesSerializer(serializers.ModelSerializer):
             'title',
             'product_set'
         ]
+# class ListFilter(Filter):
+#     def filter(self, qs, value):
+#         value_list = value.split(u',')
+#         return super(ListFilter, self).filter(qs, Lookup(value_list, 'in'))
+#
+# class ProductStylesSerializer(filters.Filterset):
+#     styles = ListFilter(name='categories__slug')
+#     class Meta:
+#         model = ProductStyles
+#         fields = [
+#             'id',
+#             'title',
+#             'product_set'
+#         ]
 
 
+    # class Meta:
+    #     model = ProductStyles
+    #     fields = ['category']
 
 class BrandSerializer(serializers.ModelSerializer):
     product_set = ProductSerializer(many=True)

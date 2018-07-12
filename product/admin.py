@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Product, ProductImage, Variation, ProductBrand, ProductSeller, ProductVarImage, ProductOccasion, ProductStyles, ProductRooms
+from .models import Category, Product, ProductImage, Variation, ProductBrand, ProductSeller, ProductVarImage, ProductOccasion, ProductStyles, ProductRooms, ProductDesigner, ProductTable, ProductChair, ProductSofa
 
 
 class ProductImageInline(admin.TabularInline):
@@ -128,6 +128,48 @@ class ProductRoomsAdmin(admin.ModelAdmin):
     class Meta:
         model = ProductRooms
 
+class ProductDesignerAdmin(admin.ModelAdmin):
+    list_display = ['__str__']
+    def get_queryset(self, request):
+        qs = super(ProductDesignerAdmin, self).get_queryset(request)
+        if not request.user.is_superuser:
+            return qs.filter(seller_id__user_id=request.user)
+        else:
+            return qs
+    class Meta:
+        model = ProductDesigner
+
+class ProductTableAdmin(admin.ModelAdmin):
+    list_display = ['__str__']
+    def get_queryset(self, request):
+        qs = super(ProductTableAdmin, self).get_queryset(request)
+        if not request.user.is_superuser:
+            return qs.filter(seller_id__user_id=request.user)
+        else:
+            return qs
+    class Meta:
+        model = ProductTable
+
+class ProductChairAdmin(admin.ModelAdmin):
+    list_display = ['__str__']
+    def get_queryset(self, request):
+        qs = super(ProductChairAdmin, self).get_queryset(request)
+        if not request.user.is_superuser:
+            return qs.filter(seller_id__user_id=request.user)
+        else:
+            return qs
+    class Meta:
+        model = ProductChair
+class ProductSofaAdmin(admin.ModelAdmin):
+    list_display = ['__str__']
+    def get_queryset(self, request):
+        qs = super(ProductSofaAdmin, self).get_queryset(request)
+        if not request.user.is_superuser:
+            return qs.filter(seller_id__user_id=request.user)
+        else:
+            return qs
+    class Meta:
+        model = ProductSofa
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductImage, ProductImageAdmin)
@@ -139,3 +181,7 @@ admin.site.register(ProductSeller)
 admin.site.register(ProductRooms, ProductRoomsAdmin)
 admin.site.register(ProductOccasion, ProductOccasionAdmin)
 admin.site.register(ProductStyles, ProductStylesAdmin)
+admin.site.register(ProductDesigner, ProductDesignerAdmin)
+admin.site.register(ProductTable, ProductTableAdmin)
+admin.site.register(ProductChair, ProductChairAdmin)
+admin.site.register(ProductSofa, ProductSofaAdmin)

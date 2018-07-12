@@ -13,27 +13,25 @@ from dummy_pages.views import DummyListAPIView
 from order.views import (OrderListAPIView, OrderRetrieveAPIView, UserAddressCreateAPIView, UserAddressListAPIView,
                          UserCheckoutAPI, UserGetID)
 from product.views import (APIHomeView, BrandListAPIView, CategoryListAPIView, CategoryRetrieveAPIView,
-                           ProductListAPIView, ProductRetrieveAPIView, SellerListAPIView, SearchListAPIView, FilteredListAPIView, StyleRetrieveAPIView, RoomRetrieveAPIView, OccasionRetrieveAPIView, BrandRetrieveAPIView)
-from user_profile.views import UserViewSet
+                           ProductListAPIView, ProductRetrieveAPIView, SellerListAPIView, SearchListAPIView,
+                           FilteredListAPIView, StyleRetrieveAPIView, RoomRetrieveAPIView, OccasionRetrieveAPIView, BrandRetrieveAPIView, DesignerRetrieveAPIView,TableRetrieveAPIView,ChairRetrieveAPIView,SofaRetrieveAPIView
+                           )
+from user_profile.views import (UserViewSet)
 from social import views
-
 from rest_auth.registration.views import (
     SocialAccountListView, SocialAccountDisconnectView
 )
-
 router = routers.DefaultRouter()
 router.register(r'user', UserViewSet, )
 
 urlpatterns = [
-
+    # router.urls,
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('wishlists.urls')),
     url(r'^api/', include('product_review.urls')),
     url(r'^api/newsletter/', include('newsletter.api.urls')),
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
-
     url(r'^rest-auth/social/facebook/$', views.FacebookLogin.as_view(), name='fb_login'),
     url(r'^rest-auth/social/twitter/$', views.TwitterLogin.as_view(), name='twitter_login'),
     url(r'^rest-auth/social/google/$', views.GoogleLogin.as_view(), name='google_login'),
@@ -60,7 +58,10 @@ urlpatterns = [
     url(r'^api/room/(?P<pk>\d+)/$', RoomRetrieveAPIView.as_view(), name='room_item_api'),
     url(r'^api/occasion/(?P<pk>\d+)/$', OccasionRetrieveAPIView.as_view(), name='occasion_item_api'),
     url(r'^api/brand/(?P<pk>\d+)/$', BrandRetrieveAPIView.as_view(), name='brand_item_api'),
-
+    url(r'^api/designer/(?P<pk>\d+)/$', DesignerRetrieveAPIView.as_view(), name='designer_item_api'),
+    url(r'^api/table/(?P<pk>\d+)/$', TableRetrieveAPIView.as_view(), name='table_item_api'),
+    url(r'^api/chair/(?P<pk>\d+)/$', ChairRetrieveAPIView.as_view(), name='chair_item_api'),
+    url(r'^api/sofa/(?P<pk>\d+)/$', SofaRetrieveAPIView.as_view(), name='sofa_item_api'),
     url(r'^api/orders/$', OrderListAPIView.as_view(), name='orders_api'),
     url(r'^api/orders/(?P<pk>\d+)/$', OrderRetrieveAPIView.as_view(), name='order_detail_api'),
     url(r'^api/cart/$', CartAPIView.as_view(), name='cart_api'),

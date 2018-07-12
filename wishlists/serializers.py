@@ -43,8 +43,5 @@ class GetWishListItemsSerializer(serializers.ModelSerializer):
     def get_variation_set(self, obj):
         query_set = Variation.objects.filter(id=obj.product.id)
         serializers =VariationSerializer(query_set, many=True)
-<<<<<<< HEAD
         return serializers.data
-=======
-        return serializers.data
->>>>>>> e5c2f4d56cb9064404831271c81324e10cf7dd2b
+
