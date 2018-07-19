@@ -255,6 +255,7 @@ class CategorySerializer(serializers.ModelSerializer):
             "url",
             "id",
             "title",
+            'arab'
             "description",
             "product_set",
         ]
@@ -265,6 +266,7 @@ class CategoryListSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
+            'arab',
             'description'
         ]
 
@@ -275,6 +277,7 @@ class ProductOccasionSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
+            'arab',
             'product_set'
         ]
 
@@ -325,6 +328,7 @@ class ProductRoomsSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
+            'arab',
             'product_set'
         ]
 
@@ -335,6 +339,7 @@ class ProductStylesSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
+            'arab',
             'product_set'
         ]
 # class ListFilter(Filter):
@@ -363,6 +368,7 @@ class BrandSerializer(serializers.ModelSerializer):
         model = ProductBrand
         fields = [
             "title",
+            'arab',
             "id",
             "product_set"
         ]
@@ -371,6 +377,7 @@ class BrandListSerializer(serializers.ModelSerializer):
         model = ProductBrand
         fields = [
             "title",
+            'arab',
             "id"
         ]
 class OccasionListSerializer(serializers.ModelSerializer):
@@ -378,7 +385,8 @@ class OccasionListSerializer(serializers.ModelSerializer):
         model = ProductOccasion
         fields = [
             'id',
-            'title'
+            'title',
+            "arab"
         ]
 
 class DesignerListSerializer(serializers.ModelSerializer):
@@ -418,7 +426,8 @@ class RoomsListSerializer(serializers.ModelSerializer):
         model = ProductRooms
         fields = [
             'id',
-            'title'
+            'title',
+            "arab",
         ]
 
 class StylesListSerializer(serializers.ModelSerializer):
@@ -426,7 +435,8 @@ class StylesListSerializer(serializers.ModelSerializer):
         model = ProductStyles
         fields = [
             'id',
-            'title'
+            'title',
+            "arab"
         ]
 
 class SellerSerializer(serializers.ModelSerializer):

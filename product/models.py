@@ -37,6 +37,7 @@ class ProductSeller(models.Model):
 
 class ProductBrand(models.Model):
     title = models.CharField(max_length=180, unique=True)
+    arab = models.CharField(max_length=180,  default='غير معروف')
     seller_id = models.OneToOneField(ProductSeller)
     def __str__(self):
         return self.title
@@ -47,6 +48,7 @@ class ProductBrand(models.Model):
 
 class ProductRooms(models.Model):
     title = models.CharField(max_length=180, unique=True)
+    arab = models.CharField(max_length=180, default='غير معروف')
     seller_id = models.OneToOneField(ProductSeller)
     def __str__(self):
         return self.title
@@ -56,6 +58,7 @@ class ProductRooms(models.Model):
 
 class ProductStyles(models.Model):
     title = models.CharField(max_length=180, unique=True)
+    arab = models.CharField(max_length=180,  default='غير معروف')
     seller_id = models.OneToOneField(ProductSeller)
     def __str__(self):
         return self.title
@@ -65,6 +68,7 @@ class ProductStyles(models.Model):
 
 class ProductOccasion(models.Model):
     title = models.CharField(max_length=180, unique=True)
+    arab = models.CharField(max_length=180,  default='غير معروف')
     seller_id = models.OneToOneField(ProductSeller)
     def __str__(self):
         return self.title
@@ -241,6 +245,7 @@ class ProductVarImage(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=120, unique=True)
+    arab = models.CharField(max_length=180, default='غير معروف')
     slug = models.SlugField(unique=True)
     description = models.TextField(null=True, blank=True)
     active = models.BooleanField(default=True)
