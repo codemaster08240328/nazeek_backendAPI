@@ -53,6 +53,18 @@ class VariationSerializer(serializers.ModelSerializer):
         f.close()
         return  data
 
+class SearchVariationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Variation
+        fields = [
+            "id",
+            "title",
+            "price",
+            "sale_price",
+            "color",
+        ]
+
 
 class ProductImageSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
@@ -205,7 +217,33 @@ class ProductSerializer(serializers.ModelSerializer):
         f.close()
         return data
 
+class SearchProductSerializer(serializers.ModelSerializer):
+    variation_set = SearchVariationSerializer(many=True)
+    image = serializers.SerializerMethodField()
+    brand_name = serializers.CharField(source='brand_id.title')
+    seller_name = serializers.CharField(source='seller_id.title')
 
+    class Meta:
+        model = Product
+        fields = [
+            "id",
+            "title",
+            "brand_id",
+            "seller_id",
+            'description',
+            "brand_name",
+            "seller_name",
+            "image",
+            'price',
+            "variation_set",
+        ]
+
+    def get_image(self, obj):
+        f = open(obj.productimage_set.first().image.path, 'rb')
+        image = File(f)
+        data = base64.b64encode(image.read())
+        f.close()
+        return data
 
 class CategorySerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='category_detail_api')

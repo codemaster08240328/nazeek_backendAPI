@@ -9,7 +9,7 @@ import json
 # Create your views here.
 from .models import Category, Product, ProductSeller, ProductBrand, ProductStyles, ProductRooms, ProductOccasion, ProductSofa, ProductChair, ProductTable, ProductDesigner
 from .pagination import CategoryPagination
-from .serializers import (CategorySerializer,CategoryListSerializer, ProductDetailSerializer, ProductSerializer, BrandSerializer, ProductOccasionSerializer, ProductRoomsSerializer, ProductStylesSerializer,
+from .serializers import (CategorySerializer,CategoryListSerializer, ProductDetailSerializer, ProductSerializer, SearchProductSerializer, BrandSerializer, ProductOccasionSerializer, ProductRoomsSerializer, ProductStylesSerializer,
                           SellerSerializer, ProductDesignerSerializer, ProductSofaSerializer, ProductTableSerializer, ProductChairSerializer, OccasionListSerializer, BrandListSerializer, TableListSerializer, DesignerListSerializer, StylesListSerializer, RoomsListSerializer, ChairListSerializer, SofaListSerializer)
 from project.settings import PROJECT_URL
 
@@ -191,7 +191,7 @@ class SofaRetrieveAPIView(generics.RetrieveAPIView):
 
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    serializer_class = SearchProductSerializer
     filter_backends = [
         filters.SearchFilter,
         filters.OrderingFilter,
