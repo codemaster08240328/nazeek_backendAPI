@@ -9,8 +9,8 @@ import json
 # Create your views here.
 from .models import Category, Product, ProductSeller, ProductBrand, ProductStyles, ProductRooms, ProductOccasion, ProductSofa, ProductChair, ProductTable, ProductDesigner
 from .pagination import CategoryPagination
-from .serializers import (CategorySerializer, ProductDetailSerializer, ProductSerializer, BrandSerializer, ProductOccasionSerializer, ProductRoomsSerializer, ProductStylesSerializer,
-                          SellerSerializer, ProductDesignerSerializer, ProductSofaSerializer, ProductTableSerializer, ProductChairSerializer)
+from .serializers import (CategorySerializer,CategoryListSerializer, ProductDetailSerializer, ProductSerializer, BrandSerializer, ProductOccasionSerializer, ProductRoomsSerializer, ProductStylesSerializer,
+                          SellerSerializer, ProductDesignerSerializer, ProductSofaSerializer, ProductTableSerializer, ProductChairSerializer, OccasionListSerializer, BrandListSerializer, TableListSerializer, DesignerListSerializer, StylesListSerializer, RoomsListSerializer, ChairListSerializer, SofaListSerializer)
 from project.settings import PROJECT_URL
 
 class APIHomeView(APIView):
@@ -55,7 +55,7 @@ class APIHomeView(APIView):
 
 class CategoryListAPIView(generics.ListAPIView):
     queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    serializer_class = CategoryListSerializer
     pagination_class = CategoryPagination
 
 
@@ -67,13 +67,13 @@ class SearchListAPIView(APIView):
 
     def get(self, request, format=None):
         queryset = ProductOccasion.objects.all()
-        occasion_items = ProductOccasionSerializer(queryset, many=True)
+        occasion_items = OccasionListSerializer(queryset, many=True)
         queryset = ProductStyles.objects.all()
-        style_item = ProductStylesSerializer(queryset, many=True)
+        style_item = StylesListSerializer(queryset, many=True)
         queryset = ProductBrand.objects.all()
-        brand_item = BrandSerializer(queryset, many=True)
+        brand_item = BrandListSerializer(queryset, many=True)
         queryset = ProductRooms.objects.all()
-        room_item = ProductRoomsSerializer(queryset, many=True)
+        room_item = RoomsListSerializer(queryset, many=True)
         data = {
             'occasions' : occasion_items.data,
             'rooms' : room_item.data,

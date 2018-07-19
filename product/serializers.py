@@ -221,6 +221,15 @@ class CategorySerializer(serializers.ModelSerializer):
             "product_set",
         ]
 
+class CategoryListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = [
+            'id',
+            'title',
+            'description'
+        ]
+
 class ProductOccasionSerializer(serializers.ModelSerializer):
     product_set = ProductSerializer(many=True)
     class Meta:
@@ -319,7 +328,68 @@ class BrandSerializer(serializers.ModelSerializer):
             "id",
             "product_set"
         ]
+class BrandListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductBrand
+        fields = [
+            "title",
+            "id"
+        ]
+class OccasionListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductOccasion
+        fields = [
+            'id',
+            'title'
+        ]
 
+class DesignerListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductDesigner
+        fields = [
+            'id',
+            'title'
+        ]
+
+class TableListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductTable
+        fields = [
+            'id',
+            'title',        ]
+
+class ChairListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductChair
+        fields = [
+            'id',
+            'title'
+        ]
+
+class SofaListSerializer(serializers.ModelSerializer):
+    product_set = ProductSerializer(many=True)
+    class Meta:
+        model = ProductSofa
+        fields = [
+            'id'
+            'title',
+        ]
+
+class RoomsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductRooms
+        fields = [
+            'id',
+            'title'
+        ]
+
+class StylesListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductStyles
+        fields = [
+            'id',
+            'title'
+        ]
 
 class SellerSerializer(serializers.ModelSerializer):
     class Meta:

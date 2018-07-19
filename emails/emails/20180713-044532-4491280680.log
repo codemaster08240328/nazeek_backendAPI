@@ -1,0 +1,25 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Password reset on example.com
+From: admin@admin.com
+To: reactexpert@gmail.com
+Date: Fri, 13 Jul 2018 04:45:33 -0000
+Message-ID: <20180713044533.22528.23004@spidermans-imac.local>
+
+
+You're receiving this email because you requested a password reset for your user account at example.com.
+
+Please go to the following page and choose a new password:
+
+http://example.com/reset/MTM/4xu-5a0bc1ad4df32ee57643/
+
+Your username, in case you've forgotten: happyman
+
+Thanks for using our site!
+
+The example.com team
+
+
+
+-------------------------------------------------------------------------------
