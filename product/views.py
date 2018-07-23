@@ -115,9 +115,6 @@ class StyleListAPIView(generics.ListAPIView):
 
 
 
-class StyleRetrieveAPIView(generics.RetrieveAPIView):
-    queryset = ProductStyles.objects.all()
-    serializer_class = ProductStylesSerializer
 
 class RoomListAPIView(generics.ListAPIView):
     queryset = ProductRooms.objects.all()
@@ -229,3 +226,9 @@ class BrandListAPIView(generics.ListAPIView):
 class BrandRetrieveAPIView(generics.RetrieveAPIView):
     queryset = ProductBrand.objects.all()
     serializer_class = BrandSerializer
+
+
+class StyleRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = ProductStyles.objects.all()
+    serializer_class = ProductStylesSerializer
+

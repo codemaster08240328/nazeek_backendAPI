@@ -32,6 +32,8 @@ urlpatterns = [
     url(r'^api/newsletter/', include('newsletter.api.urls')),
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+
     url(r'^rest-auth/social/facebook/$', views.FacebookLogin.as_view(), name='fb_login'),
     url(r'^rest-auth/social/twitter/$', views.TwitterLogin.as_view(), name='twitter_login'),
     url(r'^rest-auth/social/google/$', views.GoogleLogin.as_view(), name='google_login'),

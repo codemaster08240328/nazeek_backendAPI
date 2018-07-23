@@ -188,8 +188,7 @@ class SimilarProduct(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    variation_set = VariationSerializer(many=True)
-    productimage_set = ProductImageSerializer(many=True)
+    variation_set = SearchVariationSerializer(many=True)
     image = serializers.SerializerMethodField()
     brand_name = serializers.CharField(source='brand_id.title')
     seller_name = serializers.CharField(source='seller_id.title')
@@ -206,8 +205,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "seller_name",
             "image",
             'price',
-            "variation_set",
-            "productimage_set"
+            "variation_set"
         ]
 
     def get_image(self, obj):
@@ -255,7 +253,7 @@ class CategorySerializer(serializers.ModelSerializer):
             "url",
             "id",
             "title",
-            'arab'
+            'arab',
             "description",
             "product_set",
         ]
